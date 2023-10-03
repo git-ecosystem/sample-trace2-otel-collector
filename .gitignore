@@ -1,0 +1,12 @@
+.DS_Store
+*~
+
+# Ignore the executables that are built in the source directories.
+sample-trace2-otel-collector
+sample-trace2-otel-collector.exe
+
+# Ignore the various installer intermediate images.
+_out_/
+_layout_/
+_component_/
+_package_/
