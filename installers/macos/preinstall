@@ -1,0 +1,31 @@
+#!/bin/sh
+##################################################################
+
+INSTALL_LOCATION=/usr/local/sample-trace2-otel-collector
+
+mkdir -p "$INSTALL_LOCATION/logs"
+LOGFILE="$INSTALL_LOCATION/logs/install.txt"
+exec >>$LOGFILE 2>&1
+
+echo ""
+echo ""
+echo ""
+echo "================================================================"
+echo "preinstall: X_VER_X"
+echo "================================================================"
+echo ""
+date
+
+set -x
+
+if [ -e $INSTALL_LOCATION/scripts/service_stop ]
+then
+	## Force stop a previous installation before trying to install
+	## and start the current one.
+
+	echo Attempting to stop sample-trace2-otel-collector
+	$INSTALL_LOCATION/scripts/service_stop
+fi
+
+exit 0
+

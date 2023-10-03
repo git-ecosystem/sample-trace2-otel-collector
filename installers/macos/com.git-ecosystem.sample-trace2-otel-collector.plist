@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.git-ecosystem.sample-trace2-otel-collector</string>
+
+	<key>WorkingDirectory</key>
+	<string>/usr/local/sample-trace2-otel-collector/bin</string>
+
+	<key>ProgramArguments</key>
+	<array>
+	  <string>/usr/local/sample-trace2-otel-collector/bin/sample-trace2-otel-collector</string>
+	  <string>--config</string>
+	  <string>/usr/local/sample-trace2-otel-collector/config.yml</string>
+	</array>
+
+	<key>KeepAlive</key>
+	<true/>
+
+	<key>StandardErrorPath</key>
+	<string>/usr/local/sample-trace2-otel-collector/logs/stderr.txt</string>
+
+	<key>StandardOutPath</key>
+	<string>/usr/local/sample-trace2-otel-collector/logs/stdout.txt</string>
+
+</dict>
+</plist>

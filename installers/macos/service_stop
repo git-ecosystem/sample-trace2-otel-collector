@@ -1,0 +1,19 @@
+#!/bin/sh
+##################################################################
+
+set -x
+
+INSTALL_LOCATION=/usr/local/sample-trace2-otel-collector
+
+## Unset the system-level Git config values set when the service was started.
+
+for g in /usr/bin/git /usr/local/bin/git /opt/homebrew/bin/git
+do
+	if [ -x "$g" ]
+	then
+		$g config --system --unset trace2.eventtarget
+		$g config --system --unset trace2.configparams
+	fi
+done
+
+/bin/launchctl unload /Library/LaunchDaemons/com.git-ecosystem.sample-trace2-otel-collector.plist

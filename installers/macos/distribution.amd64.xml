@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<installer-gui-script minSpecVersion="1">
+    <title>Sample Trace2 OpenTelemetry Collector</title>
+    <background file="background.png" mime-type="image/png" alignment="bottomleft" scaling="tofit" />
+    <options customize="never" hostArchitectures="x86_64" />
+    <welcome file="welcome.html" mime-type="text/html" />
+    <conclusion file="conclusion.html" mime-type="text/html" />
+    <license file="LICENSE" />
+    <volume-check>
+        <allowed-os-versions>
+            <os-version min="10.13" />
+        </allowed-os-versions>
+    </volume-check>
+
+    <pkg-ref id="com.git-ecosystem.sample-trace2-otel-collector"/>
+    <pkg-ref id="com.git-ecosystem.sample-trace2-otel-collector.overlay"/>
+
+    <choices-outline>
+        <line choice="default">
+            <line choice="com.git-ecosystem.sample-trace2-otel-collector"/>
+            <line choice="com.git-ecosystem.sample-trace2-otel-collector.overlay"/>
+        </line>
+    </choices-outline>
+
+    <choice id="default"/>
+
+    <choice id="com.git-ecosystem.sample-trace2-otel-collector" visible="false">
+        <pkg-ref id="com.git-ecosystem.sample-trace2-otel-collector"/>
+    </choice>
+    <pkg-ref id="com.git-ecosystem.sample-trace2-otel-collector">com.git-ecosystem.sample-trace2-otel-collector.component.pkg</pkg-ref>
+
+    <choice id="com.git-ecosystem.sample-trace2-otel-collector.overlay" visible="false">
+        <pkg-ref id="com.git-ecosystem.sample-trace2-otel-collector.overlay"/>
+    </choice>
+    <pkg-ref id="com.git-ecosystem.sample-trace2-otel-collector.overlay">com.git-ecosystem.sample-trace2-otel-collector.overlay.pkg</pkg-ref>
+
+</installer-gui-script>
