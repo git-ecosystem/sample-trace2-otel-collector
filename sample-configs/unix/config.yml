@@ -1,0 +1,28 @@
+# A sample config.yml file for Linux and macOS.
+#
+# All pathnames should be absolute to your intended installation
+# directory because we don't want to assume a CWD when the service
+# is run from `systemd(1)` or `launchctl(1)`.
+
+receivers:
+  trace2receiver:
+    socket: "/usr/local/sample-trace2-otel-collector/trace2.socket"
+#   filter: "/usr/local/sample-trace2-otel-collector/filter.yml"
+#   pii:    "/usr/local/sample-trace2-otel-collector/pii.yml"
+
+processors:
+
+exporters:
+  logging:
+    verbosity: normal   # basic, normal, detailed
+
+service:
+  telemetry:
+    logs:
+      level: "INFO"     # "INFO", "DEBUG"
+  pipelines:
+    traces:
+      receivers: [trace2receiver]
+      processors: []
+      exporters: [logging]
+      
