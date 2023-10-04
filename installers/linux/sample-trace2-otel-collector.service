@@ -1,0 +1,14 @@
+[Unit]
+Description=Sample Trace2 OpenTelemetry Collector
+After=network.target
+
+[Service]
+ExecStart=/usr/local/sample-trace2-otel-collector/bin/sample-trace2-otel-collector --config=/usr/local/sample-trace2-otel-collector/config.yml
+KillMode=mixed
+Restart=on-failure
+Type=simple
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,8 @@
+Package: sample-trace2-otel-collector
+Version: X_NVER_X
+Section: vcs
+Priority: optional
+Architecture: X_GOARCH_X
+Depends:
+Maintainer: Your Name <your-email@your-company.com>
+Description: Sample Trace2 OpenTelemetry Collector
