@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -e
+
+INSTALL_LOCATION=/usr/local/sample-trace2-otel-collector
+
+mkdir -p "$INSTALL_LOCATION/logs"
+LOGFILE="$INSTALL_LOCATION/logs/install.txt"
+exec >>$LOGFILE 2>&1
+
+echo ""
+echo ""
+echo ""
+echo "================================================================"
+echo "postinst: X_VER_X"
+echo "================================================================"
+echo ""
+date
+
+set -x
+
+echo Attempting to start sample-trace2-otel-collector
+$INSTALL_LOCATION/scripts/service_start
+

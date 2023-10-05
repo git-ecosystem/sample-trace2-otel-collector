@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e
+set -x
+
+INSTALL_LOCATION=/usr/local/sample-trace2-otel-collector
+
+## Unset the system-level Git config values set when the service was started.
+##
+## Note that "/usr/bin/git" thinks the system config is in "/etc/gitconfig".
+## And "/usr/local/bin/git" thinks that it is in "/usr/local/git/etc/gitconfig".
+
+for g in /usr/bin/git /usr/local/bin/git
+do
+	if [ -x "$g" ]
+	then
+		$g config --system --unset trace2.eventtarget
+		$g config --system --unset trace2.configparams
+	fi
+done
+
+if command -v systemctl >/dev/null 2>&1
+then
+	systemctl stop sample-trace2-otel-collector.service
+	systemctl disable sample-trace2-otel-collector.service
+fi

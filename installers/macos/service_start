@@ -1,0 +1,36 @@
+#!/bin/sh
+##################################################################
+
+set -x
+
+INSTALL_LOCATION=/usr/local/sample-trace2-otel-collector
+
+/bin/launchctl load /Library/LaunchDaemons/com.git-ecosystem.sample-trace2-otel-collector.plist
+
+## Point Trace2 telemetry events from all Git commands to the Unix
+## domain socket where our service will listen.  This value (after
+## the "af_unix:" prefix, must match the value of the "socket"
+## field in the "config.yml" file that you start the service with
+## and this is specified in the plist file.
+##
+ET="af_unix:$INSTALL_LOCATION/trace2.socket"
+
+## Enable Trace2 telemetry from all Git commands using a system-level
+## config setting.
+##
+## Set "trace2.configParams" in anticipation of using ruleset filtering
+## with the "otel.trace2.*" keys described in the examples.
+##
+## There may be several versions of Git installed on the system and
+## they each have their own notion of where the system config is
+## stored, so try each of them.
+
+for g in /usr/bin/git /usr/local/bin/git /opt/homebrew/bin/git
+do
+	if [ -x "$g" ]
+	then
+		$g config --system trace2.eventtarget $ET
+		$g config --system trace2.configparams 'otel.trace2.*'
+		$g config --system --list --show-origin | /usr/bin/grep -i trace2
+	fi
+done

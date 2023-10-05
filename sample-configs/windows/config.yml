@@ -1,0 +1,30 @@
+# A sample config.yml file for Windows.
+#
+# All pathnames should be absolute to your intended installation
+# and data directory because we don't want to assume a CWD when the
+# service is started by the Service Manager in Control Panel.
+#
+# However, the "pipe" pathanme must always have the "//./pipe/" prefix.
+
+receivers:
+  trace2receiver:
+    pipe:   "//./pipe/sample-trace2-otel-collector"
+#   filter: "C:/ProgramData/sample-trace2-otel-collector/filter.yml"
+#   pii:    "C:/ProgramData/sample-trace2-otel-collector/pii.yml"
+
+processors:
+
+exporters:
+  logging:
+    verbosity: normal   # basic, normal, detailed
+
+service:
+  telemetry:
+    logs:
+      level: "INFO"     # "INFO", "DEBUG"
+  pipelines:
+    traces:
+      receivers: [trace2receiver]
+      processors: []
+      exporters: [logging]
+      
