@@ -11,9 +11,9 @@ MyAppName=sample-trace2-otel-collector
 SC="C:/Windows/System32/sc.exe"
 
 # Tell Git to stop sending Trace2 telemetry to us.
-git config --system --unset trace2.configparams
-git config --system --unset trace2.eventtarget
-git config --system --list --show-origin | grep -i trace2
+git config --global --unset trace2.configparams
+git config --global --unset trace2.eventtarget
+git config --global --list --show-origin | grep -i trace2
 
 # Shutdown and remove any previous version of our service.  This is
 # mainly to help flush it from the list of services in the control

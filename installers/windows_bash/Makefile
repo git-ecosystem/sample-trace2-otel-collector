@@ -1,4 +1,7 @@
-## Makefile for building Windows distribution.
+## GNU Makefile for building Windows distribution using the Git SDK.
+## This includes bash and the msys2 development tools.  The resulting
+## install and registration scripts will also use bash.
+##
 ## Run this from within the `installers/windows` directory.
 ##
 ## This will create a ZIP file containing the executable, various
