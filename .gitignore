@@ -1,5 +1,6 @@
 .DS_Store
 *~
+/.vscode
 
 # Ignore the executables that are built in the source directories.
 sample-trace2-otel-collector
