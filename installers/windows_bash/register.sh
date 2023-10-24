@@ -57,6 +57,6 @@ $SC start $MyAppName || exit 1
 
 # Tell Git to send Trace2 telemetry to us.
 
-git config --system trace2.configparams $MyNamespace
-git config --system trace2.eventtarget $MyPipe
-git config --system --list --show-origin | grep -i trace2
+git config --global trace2.configparams $MyNamespace
+git config --global trace2.eventtarget $MyPipe
+git config --global --list --show-origin | grep -i trace2

@@ -1,0 +1,82 @@
+@ECHO OFF
+
+REM A script to register our OpenTelemetry collector with the control
+REM panel service manager.  Run this from an elevated command prompt.
+
+REM ****************************************************************
+REM X_*_X tokens in this template will be replaced by "build.bat".
+REM
+
+SET VER=X_VER_X
+
+REM ****************************************************************
+
+SET APPNAME=sample-trace2-otel-collector
+SET EXENAME=%APPNAME%.exe
+
+SET DISPLAY="Sample Trace2 OpenTelemetry Collector"
+SET DESCRIPTION="Relay Git telemetry to OpenTelemetry %VER%"
+
+REM In your config.yml, you must set the named pipe pathname. The value
+REM here must match that.
+SET PIPE=\\.\pipe\%APPNAME%
+
+REM In your (optional) filter.yml, you should set a common prefix for
+REM the nickname and ruleset keys. This wildcard must match that.
+SET NAMESPACE=otel.trace2.*
+
+SET SC=C:\Windows\System32\sc.exe
+
+REM I'm going to assume that you have already installed the service and
+REM various YML config files in these directories:
+
+SET PFDIR="C:\Program Files\%APPNAME%"
+SET PDDIR=C:\ProgramData\%APPNAME%
+
+REM We have to put the collector's command line arguments into the binpath
+REM because the OTEL SVC.Start handler only uses "os.Args" and does not
+REM look at the args from the service manager start dialog. And we need
+REM to do it here to get the quoting correct because of the space in
+REM "Program Files".
+REM
+REM We also need to use an absolute path to the config.yml file because
+REM the service will be started in C:\Windows\System32 and it will not chdir().
+REM Likewise, we should use absolute paths for pii.yml, filter.yml, and any
+REM rulesets.
+SET BINPATH="C:\Program Files\%APPNAME%\%EXENAME% --config %PDDIR%\config.yml"
+
+REM Shutdown and remove any previous version of our service. This is mainly
+REM to help flush it fro the list of services in the contorl panel.  Add a
+REM small timeout to avoid STOP_PENDING state.
+
+@ECHO ON
+%SC% query %APPNAME% >NUL && (ECHO Stopping previous version)
+%SC% query %APPNAME% >NUL && (%SC% stop %APPNAME%; TIMEOUT /T 10)
+%SC% query %APPNAME% >NUL && (%SC% delete %APPNAME%)
+@ECHO OFF
+
+REM Register our collector with the service manager in control panel.
+REM
+REM If any of these commands fail because of a "marked for deletion" error
+REM from the above, make sure that you don't have the control panel services
+REM (services.msc) application open (or mmc.msc). They seem to hold a lock
+REM on the registry data.
+
+@ECHO ON
+%SC% create %APPNAME% binPath= %BINPATH% displayName= %DISPLAY% start= auto || (ECHO Could not register collector & EXIT /B 1)
+%SC% description %APPNAME% %DESCRIPTION% || (ECHO Could not set collector description & EXIT /B 1)
+%SC% start %APPNAME% || (ECHO Could not start collector & EXIT /B 1)
+@ECHO OFF
+
+REM Tell git.exe to send Trace2 telemetry to our collector.
+REM Use "--global" scope which refers to ".gitconfig" in your home directory
+REM across all versions of Git.  (The location of the "--system" config
+REM file varies between distributions.)
+REM 
+
+@ECHO ON
+git config --global trace2.configparams %NAMESPACE%
+git config --global trace2.eventtarget %PIPE%
+
+git config --global --list --show-origin | findstr trace2
+

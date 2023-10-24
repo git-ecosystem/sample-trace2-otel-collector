@@ -110,14 +110,16 @@ how to do this._
 The provided `installer/<platform>/Makefile` will build a minimal installer
 package for your platform.
 
+### On macOS
+
+To build an installer PKG on macOS:
+
 ```
 $ go build
 $ cd ./installer/<platform>
 $ make layout
 $ make package
 ```
-
-### On macOS
 
 A ".pkg" will be created in `./installer/macos/_out_/_pkg_/`.  You can use it to
 install the sample collector in `/usr/local/sample-trace2-otel-collector/*`.
@@ -134,6 +136,15 @@ the service and delete it.
 
 ### On Linux
 
+To build an installer DEB on Linux:
+
+```
+$ go build
+$ cd ./installer/<platform>
+$ make layout
+$ make package
+```
+
 A ".deb" will be created in `./installer/linux/_out_/_pkg_/`.  You can use it to
 install the sample collector in `/usr/local/sample-trace2-otel-collector/*`.
 The installer script will copy the files, register it with `systemctl(1)`,
@@ -144,18 +155,62 @@ stop and restart the service. Use these if you want to try different settings
 in your installed `config.yml` or other YML files (such as `filter.yml`).
 
 
-### On Windows
+### On Windows (Command Prompt)
 
-A ZIP file will be created in `./installer/windows/_out_/` containing the
-executable, the YML files, and shell scripts to install and register/unregister
+To build a ZIP file for Windows using a Command Prompt and create BAT files.
+(_You can use either a VS Developer Command Prompt or a plain Command Prompt._)
+
+```
+> go build
+> cd ./installer/windows_batch_file
+> build.bat
+```
+
+A ZIP file will be created in `./installer/windows_batch_file/_out_/` containing the
+executable, the YML files, and scripts to install and register/unregister
 the service with Control Panel. You can redistribute the ZIP file and let
-users (in an elevated shell) run the `install.sh` and `register.sh` scripts.
-You should then see the collector in the Control Panel Service Manager.
+users (in an elevated Command Prompt) run the `install.bat` and `register.bat`
+scripts. You should then see the collector in the Control Panel Service Manager.
 
 Having three scripts is not as nice as a stand-alone exe installer,
-but will let you kick the tires and/or distribute it to your users
+but they will let you kick the tires and/or distribute the ZIP file to your users
 without involving a third-party installer-builder tool.
 
+
+NOTE: The `register.bat` script will use `git config --global` to set some global
+config values to tell Git to send telemetry data to the collector.  These are
+per-user config values, so telemetry will only be collected from the user who
+ran the script.  If you want to collect telemetry from multiple users on a
+computer, you should have each user execute those Git commands.  This is a
+limitation of using "global" scope.  You might change it to use `--system`
+scope, but this causes problems if you have multiple versions of Git installed
+on the computer, such as the one bundled with Visual Studio vs the one installed
+in `C:\Program Files\Git`, since each version has its own notion of where
+the system configuration is stored. Using `--global` solves that problem.
+
+
+
+### On Windows (Git SDK) (Deprecated)
+
+If you have the Git SDK installer and are comfortable in an `msys2 bash` shell,
+you can create a ZIP file for Windows that uses bash scripts:
+
+```
+$ go build
+$ cd ./installer/windows_bash
+$ make layout
+$ make package
+```
+
+A ZIP file will be created in `./installers/windows_bash/_out_/` containing the
+executable, the YML files, and scripts to install and register/unregister
+the service with Control Panel.  The ZIP file will contain `install.sh`,
+`register.sh` and `unregister.sh`. Run these from an elevated bash terminal.
+You should then see the collector in the Control Panel Service Manager.
+
+_I created these scripts during development, but very few people have the Git
+SDK installed, so I created the above BAT file versions and will retire the
+bash version eventually._
 
 
 ## Troubleshooting

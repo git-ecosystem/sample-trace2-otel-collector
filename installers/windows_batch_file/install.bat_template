@@ -1,0 +1,20 @@
+@ECHO OFF
+
+REM A script to install our OpenTelemetry collector into Program Files
+REM and ProgramData.  Run this from an elevated command prompt.
+
+SET APPNAME=sample-trace2-otel-collector
+SET EXENAME=%APPNAME%.exe
+
+SET PFDIR="C:\Program Files\%APPNAME%"
+SET PDDIR=C:\ProgramData\%APPNAME%
+
+@ECHO ON
+
+IF NOT EXIST %PFDIR% (MKDIR %PFDIR% || (ECHO Could not create %PFDIR% & EXIT /B 1))
+IF NOT EXIST %PDDIR% (MKDIR %PDDIR% || (ECHO Could not create %PDDIR% & EXIT /B 1))
+
+XCOPY /y %EXENAME% %PFDIR%\
+XCOPY /y *.bat %PFDIR%\
+
+XCOPY /y *.yml %PDDIR%\

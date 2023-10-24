@@ -1,0 +1,28 @@
+@ECHO OFF
+
+REM A script to unregister our OpenTelemetry collector from the control
+REM panel service manager.  REM Run this from an elevated command prompt.
+REM
+REM We DO NOT delete Program File nor ProgramData.  We are only unregistering
+REM it, not uninstalling it.
+
+SET APPNAME=sample-trace2-otel-collector
+
+SET SC=C:\Windows\System32\sc.exe
+
+REM Tell Git to stop sending Trace2 telemetry to us.
+
+@ECHO ON
+git config --global --unset trace2.configparams
+git config --global --unset trace2.eventtarget
+git config --global --list --show-origin | findstr trace2
+@ECHO OFF
+
+REM Shutdown and remove our service from the control panel.
+REM Sleep for a few seconds after we stop the service and before
+REM we delete it, to avoid errors when it is in STOP_PENDING state.
+
+@ECHO ON
+%SC% query %APPNAME% >NUL && (%SC% stop %APPNAME%)
+TIMEOUT /T 10
+%SC% query %APPNAME% >NUL && (%SC% delete %APPNAME%)
