@@ -43,8 +43,13 @@ that will be statically linked into the custom collector executable.
 If you want to add or remove a component, update the YML file
 and re-run the builder tool.
 
+You should update the component versions listed in this YML file
+before running the builder tool, since the builder tool will generate
+the `go.mod` file and you don't want it to start with obsolete
+dependencies.
+
 ```
-$ GO111MODULE=on go install go.opentelemetry.io/collector/cmd/builder@latest 
+$ GO111MODULE=on go install go.opentelemetry.io/collector/cmd/builder@latest
 $ ~/go/bin/builder --config ./builder-config.yml
 $ go build
 $ go test
@@ -57,6 +62,58 @@ has additional [details](https://github.com/git-ecosystem/trace2receiver/blob/ma
 The `go` commands will automatically pull in the `trace2receiver`
 component as a dependent module in the normal GOLANG way. You may
 want to update the version numbers of any dependent modules at this time.
+
+
+
+### Errors
+
+If you see a warning like the following, update all of the pinned component versions in the `builder-config.yml` file to match the suggested version (by the newer version of the builder tool) and try again.
+
+```
+% ~/go/bin/builder --config ./builder-config.yml
+2023-11-16T12:30:23.932-0500	INFO	internal/command.go:123	OpenTelemetry Collector Builder	{"version": "dev", "date": "unknown"}
+2023-11-16T12:30:23.934-0500	INFO	internal/command.go:159	Using config file	{"path": "./builder-config.yml"}
+2023-11-16T12:30:23.934-0500	INFO	builder/config.go:109	Using go	{"go-executable": "/usr/local/go/bin/go"}
+2023-11-16T12:30:23.934-0500	INFO	builder/main.go:67	You're building a distribution with non-aligned version of the builder. Compilation may fail due to API changes. Please upgrade your builder or API	{"builder-version": "0.89.0"}
+2023-11-16T12:30:23.937-0500	INFO	builder/main.go:91	Sources created	{"path": "."}
+...
+```
+
+In my case, I last used `v0.81.0` in my `builder-config.yml` file and upgraded the tool to `v0.89.0`, so I had a mismatch.
+
+```
+ % git diff -- builder-config.yml
+diff --git a/builder-config.yml b/builder-config.yml
+index b011468..3b1e23e 100644
+--- a/builder-config.yml
++++ b/builder-config.yml
+@@ -2,21 +2,21 @@ dist:
+   module: github.com/git-ecosystem/sample-trace2-otel-collector
+   name: sample-trace2-otel-collector
+   description: Custom OTEL Collector to convert and relay Git Trace2 data to OTLP
+-  otelcol_version: 0.81.0
++  otelcol_version: 0.89.0
+   output_path: .
+   version: 0.0.0
+
+ exporters:
+-  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/azuremonitorexporter v0.81.0
++  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/azuremonitorexporter v0.89.0
+   - import: go.opentelemetry.io/collector/exporter/loggingexporter
+-    gomod: go.opentelemetry.io/collector v0.81.0
++    gomod: go.opentelemetry.io/collector v0.89.0
+   - import: go.opentelemetry.io/collector/exporter/otlpexporter
+-    gomod: go.opentelemetry.io/collector v0.81.0
++    gomod: go.opentelemetry.io/collector v0.89.0
+
+ receivers:
+   - gomod: github.com/git-ecosystem/trace2receiver v0.4.3
+
+ processors:
+   - import: go.opentelemetry.io/collector/processor/batchprocessor
+-    gomod: go.opentelemetry.io/collector v0.81.0
++    gomod: go.opentelemetry.io/collector v0.89.0
+```
 
 
 
