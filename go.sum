@@ -655,8 +655,8 @@ github.com/fsnotify/fsnotify v1.4.9/go.mod h1:znqG4EE+3YCdAaPaxE2ZRY/06pZUdp0tY4
 github.com/fsnotify/fsnotify v1.7.0 h1:8JEhPFa5W2WU7YfeZzPNqzMP6Lwt7L2715Ggo0nosvA=
 github.com/fsnotify/fsnotify v1.7.0/go.mod h1:40Bi/Hjc2AVfZrqy+aj+yEI+/bRxZnMJyTJwOpGvigM=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
-github.com/git-ecosystem/trace2receiver v0.4.3 h1:beSDyQkukjlBBmReNEHPrPRIU9BXjsPz0uQbAp7plJA=
-github.com/git-ecosystem/trace2receiver v0.4.3/go.mod h1:GvcB1HS2zqt7jtOCNGqeYTDK2eVvkRLQnCDBKRlgdeQ=
+github.com/git-ecosystem/trace2receiver v0.5.0 h1:VujzX41g9OLSFPTwFAUUIVEYrpwcqDMviKTA6ddRiXs=
+github.com/git-ecosystem/trace2receiver v0.5.0/go.mod h1:q1yNvIlFj3Xa7ybKuOpsr0epC5TFY53ZrPkvnz/j4iI=
 github.com/go-fonts/dejavu v0.1.0/go.mod h1:4Wt4I4OU2Nq9asgDCteaAaWZOV24E+0/Pwo0gppep4g=
 github.com/go-fonts/latin-modern v0.2.0/go.mod h1:rQVLdDMK+mK1xscDwsqM5J8U2jrRa3T0ecnM9pNujks=
 github.com/go-fonts/liberation v0.1.1/go.mod h1:K6qoJYypsmfVjWg8KOVDQhLc8UDgIK2HYqyqAO9z7GY=

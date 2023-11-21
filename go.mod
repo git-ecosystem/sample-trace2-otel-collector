@@ -5,7 +5,7 @@ module github.com/git-ecosystem/sample-trace2-otel-collector
 go 1.21
 
 require (
-	github.com/git-ecosystem/trace2receiver v0.4.3
+	github.com/git-ecosystem/trace2receiver v0.5.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/exporter/azuremonitorexporter v0.89.0
 	github.com/stretchr/testify v1.8.4
 	go.opentelemetry.io/collector/component v0.89.0
