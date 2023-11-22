@@ -63,7 +63,7 @@ REM (services.msc) application open (or mmc.msc). They seem to hold a lock
 REM on the registry data.
 
 @ECHO ON
-%SC% create %APPNAME% binPath= %BINPATH% displayName= %DISPLAY% start= auto || (ECHO Could not register collector & EXIT /B 1)
+%SC% create %APPNAME% binPath= %BINPATH% obj= "NT AUTHORITY\Local Service" displayName= %DISPLAY% start= auto || (ECHO Could not register collector & EXIT /B 1)
 %SC% description %APPNAME% %DESCRIPTION% || (ECHO Could not set collector description & EXIT /B 1)
 %SC% start %APPNAME% || (ECHO Could not start collector & EXIT /B 1)
 @ECHO OFF
