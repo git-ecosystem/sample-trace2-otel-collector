@@ -1,6 +1,13 @@
 #!/bin/sh
 ##################################################################
 
+# USERNAME is the name of the pseudo user that we want the daemon to
+# run as. This is a low privileged / non-interactive account.  The
+# name here must match the name in `postinstall` and in the `plist`.
+# The string must begin with a "_" on macos.
+
+USERNAME=_trace2
+
 INSTALL_LOCATION=/usr/local/sample-trace2-otel-collector
 
 mkdir -p "$INSTALL_LOCATION/logs"
@@ -27,5 +34,85 @@ then
 	$INSTALL_LOCATION/scripts/service_stop
 fi
 
-exit 0
+# We need to ensure that there is a psuedo user (aka role) account for
+# our daemon, so that the daemon runs with minimal permissions and not
+# as the usual logged in user.  This is similar to the "nobody"
+# account.
 
+dscl . read /Users/$USERNAME >/dev/null 2>/dev/null
+if [ $? -eq 0 ]
+then
+	echo "Using existing pseudo user $USERNAME"
+	exit 0
+fi
+
+# We need to create a new pseudo user using a "role account".  These
+# have UIDs in the 200-400 range.
+#
+# Apple does not give us any tools to find or request an unused UID,
+# so we have to search for an unused UID.
+#
+# Find all of the already used role account UIDs and exclude them from
+# the allowable range. Build the free set backwards, so that we're not
+# as likely to collide with well-known services (that may not
+# currently be installed).
+
+USED_IDS=$(dscl . list /Users UniqueID | awk '{ if ($2 >= 200 && $2 < 400) print $2}' | sort -n)
+FREE_IDS=""
+for k in {200..399}
+do
+	echo $USED_IDS | grep -v -q $k && FREE_IDS="$k $FREE_IDS"
+done
+
+if [ ${#FREE_IDS} -eq 0 ]
+then
+	echo "No free UIDs available for new pseudo user $USERNAME."
+	exit 1
+fi
+
+# We probably only need to try to create the pseudo user using the
+# first free UID in our list, but lets try others if we get an error.
+#
+# 'sysadminctl' sets an exit code if we are not running as root (as
+# expected). However, when running as root, it does not always set
+# an exit code. For example, if the chosen UID is already in use,
+# it prints a warning, but does not set the exit code. So we need to
+# check the user database to confirm that it was actually created.
+#
+# I'm not sure if root will ever get a non-zero status, so if it does
+# I'm going to assume something is seriously wrong and give up.
+#
+# NEEDSWORK: The value of the GID is another mess. There is another
+# list/database of groups and group memberships and their numeric IDs
+# are unrelated to the UID numbers.  And I couldn't find a similar
+# `sysadminctl` command for creating a group; from what I could tell
+# you still have to use 5 or 6 `dscl . create /Group ...` commands.
+# I'm not going to bother with that. We only need the pseudo user ID
+# so that the daemon will run with low privileges and we only need to
+# do a `chown` on a few files in the installation directory; we don't
+# actually need a specific group. So we DO NOT use the `-GID` argument
+# and let the UID inherit the default group (probably `staff`).
+
+for k in $FREE_IDS
+do
+	echo "Trying to create pseudo user $USERNAME with UID $k."
+
+	sysadminctl -addUser $USERNAME -fullName "Git OTEL Telemetry" -UID $k -roleAccount
+	RESULT=$?
+	if [ $RESULT -ne 0 ]
+	then
+		echo "Could not create a pseudo user for $USERNAME"
+		exit $RESULT
+	fi
+
+	dscl . read /Users/$USERNAME >/dev/null 2>/dev/null
+	RESULT=$?
+	if [ $RESULT -eq 0 ]
+	then
+		echo "Pseudo user $USERNAME successfully created with UID $k."
+		exit 0
+	fi
+done
+
+echo "Could not create a pseudo user for $USERNAME"
+exit 1

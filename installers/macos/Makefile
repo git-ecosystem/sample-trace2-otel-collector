@@ -33,6 +33,11 @@ OVR := ./_out_/_overlay_/sample-trace2-otel-collector
 
 ################################################################
 
+.PHONY: default
+default: layout package
+
+################################################################
+
 # Create the on-disk layouts for our two component packages.  These
 # describe the basic structure of the directory, the binary components,
 # scripts, and etc.
