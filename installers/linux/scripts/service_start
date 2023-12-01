@@ -2,7 +2,6 @@
 
 INSTALL_LOCATION=/usr/local/sample-trace2-otel-collector
 
-set -e
 set -x
 
 if command -v systemctl >/dev/null 2>&1
