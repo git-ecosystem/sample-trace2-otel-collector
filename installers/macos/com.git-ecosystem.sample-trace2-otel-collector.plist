@@ -8,6 +8,9 @@
 	<key>WorkingDirectory</key>
 	<string>/usr/local/sample-trace2-otel-collector/bin</string>
 
+	<key>UserName</key>
+	<string>_trace2</string>
+
 	<key>ProgramArguments</key>
 	<array>
 	  <string>/usr/local/sample-trace2-otel-collector/bin/sample-trace2-otel-collector</string>

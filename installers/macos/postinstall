@@ -1,7 +1,10 @@
 #!/bin/sh
 ##################################################################
 
+USERNAME=_trace2
+
 INSTALL_LOCATION=/usr/local/sample-trace2-otel-collector
+chown $USERNAME "$INSTALL_LOCATION"
 
 ## Since this script is run by the package manager (rather than from a command
 ## line) we lose the normal stdout/stderr.  So direct all stdout and stderr
@@ -10,6 +13,8 @@ INSTALL_LOCATION=/usr/local/sample-trace2-otel-collector
 mkdir -p "$INSTALL_LOCATION/logs"
 LOGFILE="$INSTALL_LOCATION/logs/install.txt"
 exec >>$LOGFILE 2>&1
+
+chown -R $USERNAME "$INSTALL_LOCATION/logs"
 
 echo ""
 echo ""
