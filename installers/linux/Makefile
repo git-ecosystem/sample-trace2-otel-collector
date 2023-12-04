@@ -31,6 +31,13 @@ DST    := ./_out_/_layout_/usr/local/sample-trace2-otel-collector
 DEBIAN := ./_out_/_layout_/DEBIAN
 ETC    := ./_out_/_layout_/etc/systemd/system
 
+################################################################
+
+.PHONY: default
+default: layout package
+
+################################################################
+
 .PHONY: layout
 layout:
 	@echo "======== Creating Layout ========"

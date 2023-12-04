@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -e
-
 INSTALL_LOCATION=/usr/local/sample-trace2-otel-collector
 
 mkdir -p "$INSTALL_LOCATION/logs"
