@@ -14,7 +14,7 @@ exporters:
     gomod: go.opentelemetry.io/collector v0.96.0
 
 receivers:
-  - gomod: github.com/git-ecosystem/trace2receiver v0.5.2
+  - gomod: github.com/git-ecosystem/trace2receiver v0.5.5
 
 processors:
   - import: go.opentelemetry.io/collector/processor/batchprocessor

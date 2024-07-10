@@ -25,6 +25,8 @@ github.com/fsnotify/fsnotify v1.7.0 h1:8JEhPFa5W2WU7YfeZzPNqzMP6Lwt7L2715Ggo0nos
 github.com/fsnotify/fsnotify v1.7.0/go.mod h1:40Bi/Hjc2AVfZrqy+aj+yEI+/bRxZnMJyTJwOpGvigM=
 github.com/git-ecosystem/trace2receiver v0.5.4 h1:tJZ9nX0UhAEVZ3LjsRdzxfNvHeXxm5hnZpEgFBF1oLg=
 github.com/git-ecosystem/trace2receiver v0.5.4/go.mod h1:tEkIzmoPhBsfaSYlGHfeqJ7Xurk+WFGyNIsihKjQFNU=
+github.com/git-ecosystem/trace2receiver v0.5.5 h1:s7TO6mcypvY4B50kdHqRjca8oAJUbxq9pzfUcLUYm40=
+github.com/git-ecosystem/trace2receiver v0.5.5/go.mod h1:tEkIzmoPhBsfaSYlGHfeqJ7Xurk+WFGyNIsihKjQFNU=
 github.com/go-logr/logr v1.2.2/go.mod h1:jdQByPbusPIv2/zmleS9BjJVeZ6kBagPoEUsqbVz/1A=
 github.com/go-logr/logr v1.4.2 h1:6pFjapn8bFcIbiKo3XT4j/BhANplGihG6tvd+8rYgrY=
 github.com/go-logr/logr v1.4.2/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=

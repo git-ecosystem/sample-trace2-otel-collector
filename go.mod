@@ -7,7 +7,7 @@ go 1.21.0
 toolchain go1.21.4
 
 require (
-	github.com/git-ecosystem/trace2receiver v0.5.4
+	github.com/git-ecosystem/trace2receiver v0.5.5
 	github.com/open-telemetry/opentelemetry-collector-contrib/exporter/azuremonitorexporter v0.101.0
 	github.com/stretchr/testify v1.9.0
 	go.opentelemetry.io/collector/component v0.102.1
