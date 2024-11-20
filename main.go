@@ -7,6 +7,9 @@ import (
 	"log"
 
 	"go.opentelemetry.io/collector/component"
+	"go.opentelemetry.io/collector/confmap"
+	envprovider "go.opentelemetry.io/collector/confmap/provider/envprovider"
+	fileprovider "go.opentelemetry.io/collector/confmap/provider/fileprovider"
 	"go.opentelemetry.io/collector/otelcol"
 )
 
@@ -17,7 +20,20 @@ func main() {
 		Version:     "0.0.0",
 	}
 
-	if err := run(otelcol.CollectorSettings{BuildInfo: info, Factories: components}); err != nil {
+	set := otelcol.CollectorSettings{
+		BuildInfo: info,
+		Factories: components,
+		ConfigProviderSettings: otelcol.ConfigProviderSettings{
+			ResolverSettings: confmap.ResolverSettings{
+				ProviderFactories: []confmap.ProviderFactory{
+					envprovider.NewFactory(),
+					fileprovider.NewFactory(),
+				},
+			},
+		},
+	}
+
+	if err := run(set); err != nil {
 		log.Fatal(err)
 	}
 }
