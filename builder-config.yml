@@ -2,21 +2,20 @@ dist:
   module: github.com/git-ecosystem/sample-trace2-otel-collector
   name: sample-trace2-otel-collector
   description: Custom OTEL Collector to convert and relay Git Trace2 data to OTLP
-  otelcol_version: 0.96.0
   output_path: .
   version: 0.0.0
 
 exporters:
-  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/azuremonitorexporter v0.96.0
-  - import: go.opentelemetry.io/collector/exporter/loggingexporter
-    gomod: go.opentelemetry.io/collector v0.96.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/azuremonitorexporter v0.117.0
+  - import: go.opentelemetry.io/collector/exporter/debugexporter
+    gomod: go.opentelemetry.io/collector v0.117.0
   - import: go.opentelemetry.io/collector/exporter/otlpexporter
-    gomod: go.opentelemetry.io/collector v0.96.0
+    gomod: go.opentelemetry.io/collector v0.117.0
 
 receivers:
-  - gomod: github.com/git-ecosystem/trace2receiver v0.5.5
+  - gomod: github.com/git-ecosystem/trace2receiver v0.5.7
 
 processors:
   - import: go.opentelemetry.io/collector/processor/batchprocessor
-    gomod: go.opentelemetry.io/collector v0.96.0
+    gomod: go.opentelemetry.io/collector v0.117.0
 
